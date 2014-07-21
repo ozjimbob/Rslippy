@@ -29,7 +29,7 @@ Launch a browser to display the map when complete.
 }
 }
 \details{
-Currently renders a raster to tiles, produces the HTML/Javascript code to display it.  No projection of raster into the correct coordinate system currently takes place, so geographic WGS84 rasters are required.
+Currently renders a raster to tiles, produces the HTML/Javascript code to display it.  No projection of raster into the correct coordinate system currently takes place, so geographic WGS84 rasters are required. Note that there is a web Mercator error at small scales that I'm working on fixing.
 }
 \value{
 Launches a browser window displaying the map, and returns the location of the index.html file.
