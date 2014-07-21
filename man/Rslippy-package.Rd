@@ -3,12 +3,10 @@
 \alias{Rslippy}
 \docType{package}
 \title{
-What the package does (short line)
-~~ package title ~~
+Generate Leaflet slippy maps from spatial objects.
 }
 \description{
-More about what it does (maybe more than one line)
-~~ A concise (1-5 lines) description of the package ~~
+This package renders tiles from Raster or Spatial* objects, and produces a HTML page that uses the Leaflet Javascript library to render them as a slippy map in a browser.
 }
 \details{
 \tabular{ll}{
@@ -18,24 +16,16 @@ Version: \tab 1.0\cr
 Date: \tab 2014-07-21\cr
 License: \tab What license is it under?\cr
 }
-~~ An overview of how to use the package, including the most important functions ~~
+The main functions are slippyRaster, for raster objects, and slippySpatial for Spatial* vector objects.
 }
 \author{
-Who wrote it
-
-Maintainer: Who to complain to <yourfault@somewhere.net>
-~~ The author and/or maintainer of the package ~~
+Grant Williamson
+Maintainer: Grant Williamson <grant.williamson@utas.edu.au>
 }
-\references{
-~~ Literature or other references for background information ~~
-}
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R ~~
-~~ documentation directory ~~
 \keyword{ package }
-\seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
-}
-\examples{
-~~ simple examples of the most important functions ~~
-}
+\keyword{ Rslippy }
+\keyword{ slippy }
+\keyword{ raster }
+\keyword{ spatial }
+\keyword{ map }
+\keyword{ leaflet }

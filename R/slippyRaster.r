@@ -7,7 +7,7 @@ slippyRaster=function(rst,zoom=c(3,9),output,col=rev(terrain.colors(255)),browse
   xmax=ee@xmax
   ymin=ee@ymin
   ymax=ee@ymax
-  tile_list=bounding_tiles(xmin,xmax,ymin,ymax,zm)
+  tile_list=bounding_tiles(xmin,xmax,ymin,ymax,zoom)
   zs=unique(tile_list$z)
   
   if(!file.exists(output)){
@@ -18,7 +18,7 @@ slippyRaster=function(rst,zoom=c(3,9),output,col=rev(terrain.colors(255)),browse
     dir.create(paste0(output,"/tiles"))
   }
   
-  for(idx in zm[1]:zm[2]){
+  for(idx in zoom[1]:zoom[2]){
     this_root=paste0(output,"/tiles/",idx)
     if(!file.exists(this_root)){
       dir.create(this_root)
@@ -46,7 +46,7 @@ slippyRaster=function(rst,zoom=c(3,9),output,col=rev(terrain.colors(255)),browse
     h_lines=readLines(h_tem)
     midpt_x=mean(xmin,xmax)
     midpt_y=mean(ymin,ymax)
-    minzm=min(zm)
+    minzm=min(zoom)
     c_line=paste0("      var mytile =L.tileLayer('file:tiles/{z}/{x}/{y}.png',{")
     h_lines[63]=c_line
     p_line=paste0("      var map = L.map('map').setView([",midpt_y,",",midpt_x,"], ",minzm,");")
