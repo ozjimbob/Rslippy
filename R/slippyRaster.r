@@ -34,8 +34,12 @@ slippyRaster=function(rst,zoom=c(3,9),output,col=rev(terrain.colors(255)),browse
   
   
   for(idx in seq_along(tile_list$x)){
+
+    tlen=length(tile_list$x)
+    pb=txtProgressBar(min=1,max=tlen,initial=1,style=3)
+    setTxtProgressBar(pb,idx)
     eo=tile_square(tile_list$x[idx],tile_list$y[idx],tile_list$z[idx])
-    print(eo)
+    
     png(paste0(output,"/tiles/",tile_list$z[idx],"/",tile_list$x[idx],"/",tile_list$y[idx],".png"),width=256,height=256,bg="#FFFFFF00")
     par(mai=c(0,0,0,0),mar=c(0,0,0,0),bty="n",xaxt="n",yaxt="n")
     image(rst,xlim=c(eo[3],eo[4]),ylim=c(eo[1],eo[2]),bg="#FFFFFF88",col=col)
@@ -47,8 +51,11 @@ slippyRaster=function(rst,zoom=c(3,9),output,col=rev(terrain.colors(255)),browse
     midpt_x=mean(xmin,xmax)
     midpt_y=mean(ymin,ymax)
     minzm=min(zoom)
+    maxzm=max(zoom)
     c_line=paste0("      var mytile =L.tileLayer('file:tiles/{z}/{x}/{y}.png',{")
     h_lines[63]=c_line
+    m_line=paste0("        maxZoom: ",maxzm,",")
+    h_lines[64]=m_line
     p_line=paste0("      var map = L.map('map').setView([",midpt_y,",",midpt_x,"], ",minzm,");")
     h_lines[57]=p_line
     o_file=paste0(output,"/index.html")

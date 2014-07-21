@@ -31,7 +31,7 @@ bounding_tiles=function(xmin,xmax,ymin,ymax,zm){
     names(all)=c("x","y","z")
     t_list=rbind(t_list,all)
   }
-  t_list=subset(t_list,z>0)
+  t_list=subset(t_list,z>0 & x>0 & y > 0)
   t_list
 }
 
@@ -39,6 +39,29 @@ bounding_tiles=function(xmin,xmax,ymin,ymax,zm){
 tile_square=function(x,y,z){
   c1=num2deg(x,y,z)
   c2=num2deg(x+1,y+1,z)
-  return(c(min(c(c1[1],c2[1])),max(c(c1[1],c2[1])),min(c(c1[2],c2[2])),max(c(c1[2],c2[2]))))
+  xmin=min(c(c1[2],c2[2]))
+  xmax=max(c(c1[2],c2[2]))
+  ymin=min(c(c1[1],c2[1]))
+  ymax=max(c(c1[1],c2[1]))
+  
+  tl=data.frame(x=xmax,y=ymax)
+  coordinates(tl)=c("x","y")
+  proj4string(tl) = proj_wm
+  tl_p=spTransform(tl,CRS(proj_os))
+  
+  br=data.frame(x=xmin,y=ymin)
+  coordinates(br)=c("x","y")
+  proj4string(br) = proj_wm
+  br_p=spTransform(br,CRS(proj_os))
+  
+  xmax=coordinates(tl_p)[1]
+  ymax=coordinates(tl_p)[2]
+  xmin=coordinates(br_p)[1]
+  ymin=coordinates(br_p)[2]
+  
+  return(c(ymin,ymax,xmin,xmax))
 }
 
+proj_os = "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+proj_wm = "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+proj_fos = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0  +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs"

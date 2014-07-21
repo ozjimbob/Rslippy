@@ -10,6 +10,7 @@ The package is currently very basic - there is no checking of projections, or re
 To Do
 -----
 * Convert to S4 classes for different object types.
-* More rendering/display options
-* Sort of projection bugs / automatic reprojection
+* More rendering/display options.
+* Sort of projection bugs / automatic reprojection.
 * Integration into shiny?
+* Support for DoParallel library when rendering tiles.
