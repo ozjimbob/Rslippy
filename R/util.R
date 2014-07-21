@@ -47,12 +47,12 @@ tile_square=function(x,y,z){
   tl=data.frame(x=xmax,y=ymax)
   coordinates(tl)=c("x","y")
   proj4string(tl) = proj_wm
-  tl_p=spTransform(tl,CRS(proj_os))
+  tl_p=spTransform(tl,CRS(proj_fos))
   
   br=data.frame(x=xmin,y=ymin)
   coordinates(br)=c("x","y")
   proj4string(br) = proj_wm
-  br_p=spTransform(br,CRS(proj_os))
+  br_p=spTransform(br,CRS(proj_fos))
   
   xmax=coordinates(tl_p)[1]
   ymax=coordinates(tl_p)[2]
