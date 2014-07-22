@@ -2,12 +2,21 @@
 
 
 slippyRaster=function(rst,zoom=c(3,9),output,col=rev(terrain.colors(255)),browse=TRUE){
+  
+  if(is.na(proj4string(rst))){
+    proj4string(rst)=crs.geo
+  }
+  rst=projectRaster(rst,crs=CRS(proj_fos))
+  
   ee=extent(rst)
   xmin=ee@xmin
   xmax=ee@xmax
   ymin=ee@ymin
   ymax=ee@ymax
+  
+  
   tile_list=bounding_tiles(xmin,xmax,ymin,ymax,zoom)
+  
   zs=unique(tile_list$z)
   
   if(!file.exists(output)){
@@ -44,7 +53,7 @@ slippyRaster=function(rst,zoom=c(3,9),output,col=rev(terrain.colors(255)),browse
     par(mai=c(0,0,0,0),mar=c(0,0,0,0),bty="n",xaxt="n",yaxt="n")
     image(rst,xlim=c(eo[3],eo[4]),ylim=c(eo[1],eo[2]),bg="#FFFFFF88",col=col)
     dev.off()
-    
+  }
     
     h_tem=file("data/template.html")
     h_lines=readLines(h_tem)
@@ -63,7 +72,7 @@ slippyRaster=function(rst,zoom=c(3,9),output,col=rev(terrain.colors(255)),browse
     writeLines(h_lines,o_file)
     close(o_file)
     close(h_tem)
-  }
+  
   if(browse==TRUE){
     browseURL(paste0(output,"/index.html"))
   }

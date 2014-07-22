@@ -20,6 +20,12 @@ num2deg<-function(x,y,z){
 
 # For a given bounding box and zoom range, generate a complete list of tiles
 bounding_tiles=function(xmin,xmax,ymin,ymax,zm){
+  tl1=project(cbind(xmax,ymax),proj_fos,inv=TRUE)
+  br1=project(cbind(xmin,ymin),proj_fos,inv=TRUE)
+  xmax=tl1[1]
+  ymax=tl1[2]
+  xmin=br1[1]
+  ymin=br1[2]
   t_list=data.frame(x=0,y=0,z=0)
   for(zms in zm[1]:zm[2]){
     top_left=deg2num(ymax,xmax,zms)
@@ -46,12 +52,12 @@ tile_square=function(x,y,z){
   
   tl=data.frame(x=xmax,y=ymax)
   coordinates(tl)=c("x","y")
-  proj4string(tl) = proj_wm
+  proj4string(tl) = crs.geo
   tl_p=spTransform(tl,CRS(proj_fos))
   
   br=data.frame(x=xmin,y=ymin)
   coordinates(br)=c("x","y")
-  proj4string(br) = proj_wm
+  proj4string(br) = crs.geo
   br_p=spTransform(br,CRS(proj_fos))
   
   xmax=coordinates(tl_p)[1]
@@ -59,9 +65,11 @@ tile_square=function(x,y,z){
   xmin=coordinates(br_p)[1]
   ymin=coordinates(br_p)[2]
   
+  
   return(c(ymin,ymax,xmin,xmax))
 }
 
 proj_os = "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-proj_wm = "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
-proj_fos = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0  +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs"
+proj_wm = "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=latlong +no_defs"
+proj_fos = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs"
+crs.geo <- "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0" 

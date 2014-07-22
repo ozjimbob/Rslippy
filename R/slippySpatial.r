@@ -2,9 +2,16 @@
 
 
 slippySpatial=function(sp,zoom=c(3,9),output,col="white",border="black",browse=TRUE){
+  if(is.na(proj4string(sp))){
+    proj4string(sp)=crs.geo
+  }
+  sp=spTransform(sp,CRS(proj_fos))
+  
   null_rast=raster(nrows=180,ncols=360,xmn=-180,xmx=180,ymn=-90,ymx=90)
   values(null_rast)=NA
+  null_rast=projectRaster(from=null_rast,crs=CRS(proj_fos))
   ee=extent(sp)
+  
   xmin=ee@xmin
   xmax=ee@xmax
   ymin=ee@ymin
@@ -47,7 +54,7 @@ slippySpatial=function(sp,zoom=c(3,9),output,col="white",border="black",browse=T
     image(c_null_rast,xlim=c(eo[3],eo[4]),ylim=c(eo[1],eo[2]),bg="#FFFFFF88")
     plot(sp,add=TRUE,xlim=c(eo[3],eo[4]),ylim=c(eo[1],eo[2]),bg="#FFFFFF00",col=col,border=border)
     dev.off()
-        
+  }    
     h_tem=file("data/template.html")
     h_lines=readLines(h_tem)
     midpt_x=mean(xmin,xmax)
@@ -65,7 +72,7 @@ slippySpatial=function(sp,zoom=c(3,9),output,col="white",border="black",browse=T
     writeLines(h_lines,o_file)
     close(o_file)
     close(h_tem)
-  }
+  
   if(browse==TRUE){
     browseURL(paste0(output,"/index.html"))
   }
