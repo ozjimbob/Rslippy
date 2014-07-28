@@ -1,7 +1,30 @@
 ## Generate Spatial Tiles
 
 
-slippySpatial=function(sp,zoom=c(3,9),output,col="white",border="black",browse=TRUE){
+slippySpatial=function(sp,zoom=c(3,9),output,col="",border="black",pch=16,cex=1,browse=TRUE){
+  det_class=class(sp)[1]
+  t_class=""
+  if(det_class=="SpatialPolygonsDataFrame" | det_class=="SpatialPolygons"){
+    t_class="poly"
+    if(col==""){
+      col="lightblue"
+    }
+  }
+  if(det_class=="SpatialPointsDataFrame" | det_class=="SpatialPoints"){
+    t_class="point"
+    if(col==""){
+      col="black"
+    }
+  }
+  if(det_class=="SpatialLinesDataFrame" | det_class=="SpatialLines"){
+    t_class=="line"
+    if(col==""){
+      col="black"
+    }
+  }
+  if(t_class==""){
+    return("Require SpatialPoints, SpatialLines or SpatialPolygons object.")
+  }
   if(is.na(proj4string(sp))){
     proj4string(sp)=crs.geo
   }
@@ -52,7 +75,15 @@ slippySpatial=function(sp,zoom=c(3,9),output,col="white",border="black",browse=T
     cre=extent(c(eo[3],eo[4],eo[1],eo[2]))
     c_null_rast=crop(null_rast,cre)
     image(c_null_rast,xlim=c(eo[3],eo[4]),ylim=c(eo[1],eo[2]),bg="#FFFFFF88")
-    plot(sp,add=TRUE,xlim=c(eo[3],eo[4]),ylim=c(eo[1],eo[2]),bg="#FFFFFF00",col=col,border=border)
+    if(t_class=="poly"){
+      plot(sp,add=TRUE,xlim=c(eo[3],eo[4]),ylim=c(eo[1],eo[2]),bg="#FFFFFF00",col=col,border=border)
+    }
+    if(t_class=="line"){
+      plot(sp,add=TRUE,xlim=c(eo[3],eo[4]),ylim=c(eo[1],eo[2]),bg="#FFFFFF00",col=col)
+    }
+    if(t_class=="point"){
+      plot(sp,add=TRUE,xlim=c(eo[3],eo[4]),ylim=c(eo[1],eo[2]),bg="#FFFFFF00",col=col,cex=cex,pch=pch)
+    }
     dev.off()
   }    
     h_tem=file("data/template.html")
